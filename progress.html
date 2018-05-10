@@ -5,6 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>progress</title>
     <style>
+        .progress {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+        }
         .progress-rect {
             width: 150px;
             height: 20px;
@@ -13,7 +23,6 @@
             position: relative;
             margin: 10px;
         }
-
         .progress-rect-front {
             position: absolute;
             top: 0;
@@ -22,16 +31,13 @@
             border-radius: 10px;
             background-color: rgb(40, 40, 228);
         }
-
         .progress-ring {
             width: 220px;
             height: 220px;
         }
-
         circle {
             transition: stroke-dasharray .25s;
         }
-
         .progress-sandglass {
             width: 0;
             height: 0;
@@ -42,7 +48,6 @@
             position: relative;
             margin: 10px;
         }
-
         .progress-sandglass-front {
             position: absolute;
             width: 0;
@@ -59,8 +64,12 @@
 </head>
 
 <body>
-    <div id="progress" class="progress"></div>
-
+    <div>
+        <label><input type="radio" value="rect" onclick="getValue()" name="radio">条形进度条</label>
+        <label><input type="radio" value="ring" onclick="getValue()" name="radio">环形进度条</label>
+        <label><input type="radio" value="sandglass" onclick="getValue()" name="radio">沙漏形进度条</label>
+    </div>
+        <div id="progress" class="progress"></div>
     <script>
         class MyProgress {
             constructor(id, type) {
@@ -70,7 +79,9 @@
                 this.frontcolor = 'blue';
                 this.backcolor = 'gray';
             }
+            
             render() {
+                this.container.innerHTML = '';
                 let temp;
                 let UI = this.userInterface();
                 if (this.type === 'rect') {
@@ -131,8 +142,8 @@
                             <label for="front">前景色：</label>
                             <input type="color" id="front" name="front"><br/>
                             <label for="percent">进度：</label>
-                            <input type="range" id='percent' max='100' min='0'><br/>
-                            <input type="button" value="set">
+                            <input type="number" id='percent' max='100' min='0' value='0'>%
+                            <input type="button" value="确定">
                         </div>`;
             }
             progress_ring() {
@@ -156,8 +167,16 @@
                 return b;
             }
         }
-        let sample = new MyProgress('progress','sandglass');
-        sample.render();
+        function getValue() {
+                var radio = document.getElementsByName("radio");  
+                for (i=0; i<radio.length; i++) {  
+                if (radio[i].checked) {  
+                    let sample = new MyProgress('progress',radio[i].value);
+                    sample.render();
+                    }  
+                } 
+            }
+        
     </script>
 </body>
 </html>
